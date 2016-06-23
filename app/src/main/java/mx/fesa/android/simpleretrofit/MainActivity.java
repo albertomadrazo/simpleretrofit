@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -39,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                /**********************
-                // haces una instancia de la interface GitHubService y le creas un retrofit
+/*                // haces una instancia de la interface GitHubService y le creas un retrofit
                 GitHubService gitHubService = GitHubService.retrofit.create(GitHubService.class);
 
                 // Call, de dónde viene?
@@ -60,16 +60,26 @@ public class MainActivity extends AppCompatActivity {
                         final TextView textView = (TextView) findViewById(R.id.textView);
                         textView.setText("Something went wrong: " + t.getMessage());
                     }
-                });
-                 ***************/
+                });*/
+
                 LogUser logUser = LogUser.retrofit.create(LogUser.class);
-                final Call<SignIn> call = logUser.logUser("betoche", "lolo");
+                final Call<SignIn> call = logUser.authenticate("beto", "lolo");
+
 
                 call.enqueue(new Callback<SignIn>() {
                     @Override
                     public void onResponse(Call<SignIn> call, Response<SignIn> response) {
+                        Log.i("jfdkljsdf", "Entrale");
+
                         final TextView textView = (TextView) findViewById(R.id.textView);
-                        textView.setText(response.toString()); //response.body().toString());
+                        // Log.i(">>>>>>>>>>>>>>>>> ", response.toString());
+                        if(response.headers().toString() == null){
+                            Log.i(">>>>>>>>>>>>>> ", "The body is empty");
+                        }
+                        Log.i(">>>>>>>>>>>>>>>>> ", response.headers().toString());
+
+                        textView.setText(response.headers().toString()); //response.body().toString());
+
                     }
 
                     @Override
