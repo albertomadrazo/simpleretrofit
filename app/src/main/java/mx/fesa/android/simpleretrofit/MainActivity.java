@@ -8,6 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,28 +39,43 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                /**********************
                 // haces una instancia de la interface GitHubService y le creas un retrofit
                 GitHubService gitHubService = GitHubService.retrofit.create(GitHubService.class);
 
                 // Call, de dónde viene?
-                final Call<List<Contributor>> call =
-                        gitHubService.repoContributors("square", "retrofit");
-
+                final Call<List<Contributor>> call = gitHubService.repoContributors("square", "retrofit");
+                //final Call<List<SignIn>> call = gitHubService.getUserLogin("beto", "html", Response<SignIn>);
                 // enqueue, de dónde viene?
                 call.enqueue(new Callback<List<Contributor>>() {
-
                     // on success!
                     @Override
                     public void onResponse(Call<List<Contributor>> call, Response<List<Contributor>> response) {
                         final TextView textView = (TextView) findViewById(R.id.textView);
                         textView.setText(response.body().toString());
                     }
-
                     // not successful
                     @Override
                     public void onFailure(Call<List<Contributor>> call, Throwable t) {
                         final TextView textView = (TextView) findViewById(R.id.textView);
                         textView.setText("Something went wrong: " + t.getMessage());
+                    }
+                });
+                 ***************/
+                LogUser logUser = LogUser.retrofit.create(LogUser.class);
+                final Call<SignIn> call = logUser.logUser("betoche", "lolo");
+
+                call.enqueue(new Callback<SignIn>() {
+                    @Override
+                    public void onResponse(Call<SignIn> call, Response<SignIn> response) {
+                        final TextView textView = (TextView) findViewById(R.id.textView);
+                        textView.setText(response.toString()); //response.body().toString());
+                    }
+
+                    @Override
+                    public void onFailure(Call<SignIn> call, Throwable t) {
+                        final TextView textView = (TextView) findViewById(R.id.textView);
+                        textView.setText(call.toString());
                     }
                 });
             }
